@@ -1,0 +1,13 @@
+[debug] [2021-01-21T10:59:51.288Z] ----------------------------------------------------------------------
+[debug] [2021-01-21T10:59:51.290Z] Command:       /home/gitpod/.nvm/versions/node/v14.15.4/bin/node /home/gitpod/.nvm/versions/node/v14.15.4/bin/firebase login
+[debug] [2021-01-21T10:59:51.291Z] CLI Version:   9.2.1
+[debug] [2021-01-21T10:59:51.291Z] Platform:      linux
+[debug] [2021-01-21T10:59:51.291Z] Node Version:  v14.15.4
+[debug] [2021-01-21T10:59:51.291Z] Time:          Thu Jan 21 2021 10:59:51 GMT+0000 (Coordinated Universal Time)
+[debug] [2021-01-21T10:59:51.292Z] ----------------------------------------------------------------------
+[debug] [2021-01-21T10:59:51.292Z] 
+[debug] [2021-01-21T10:59:51.294Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[info] i  Firebase optionally collects CLI usage and error reporting information to help improve our products. Data is collected in accordance with Google's privacy policy (https://policies.google.com/privacy) and is not used to identify you.
+ 
+[debug] [2021-01-21T10:59:51.518Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2021-01-21T10:59:51.519Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
