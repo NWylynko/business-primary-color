@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "fetchJson": "cd autoFetchJson && yarn install && yarn build && yarn start",
+    "buildFunction": "cd functions && yarn install && yarn build"
+  }
+}

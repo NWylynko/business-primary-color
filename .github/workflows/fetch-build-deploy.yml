@@ -1,0 +1,29 @@
+name: fetch, build & publish
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@master
+        with:
+          node-version: 12
+      - run: yarn fetchJson
+      - uses: EndBug/add-and-commit@v4
+        with:
+          author_name: Auto Fetch
+          message: 'Updated json'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: yarn buildFunction
+      - name: Deploy to Firebase
+        uses: BIGG-Kaymo/deploy-firebase-functions@v1.0.1
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
