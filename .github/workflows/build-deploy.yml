@@ -1,0 +1,20 @@
+name: build & publish
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@master
+        with:
+          node-version: 12
+      - run: yarn buildFunction
+      - name: Deploy to Firebase
+        uses: BIGG-Kaymo/deploy-firebase-functions@v1.0.1
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
