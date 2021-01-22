@@ -30,5 +30,7 @@ export default functions.https.onRequest(async (request, response) => {
     throw new Error('color not found')
   }
 
+  response.set('Access-Control-Allow-Origin', '*');
+
   response.send(color);
 });
