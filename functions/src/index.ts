@@ -11,17 +11,19 @@ export default functions.https.onRequest(async (request, response) => {
 
   const name = request.query.name?.toString();
 
+  response.set('Access-Control-Allow-Origin', '*');
+
   if (!name) {
-    throw new Error('no name supplied')
+    response.status(404).send('no name supplied');
+    return;
   }
 
   const color = data[name];
 
   if (!color) {
-    throw new Error('color not found')
+    response.status(404).send('color not found');
+    return;
   }
 
-  response.set('Access-Control-Allow-Origin', '*');
-
-  response.send(color);
+  response.status(200).send(color);
 });
