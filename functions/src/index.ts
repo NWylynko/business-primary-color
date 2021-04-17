@@ -9,8 +9,9 @@ interface Data {
 admin.initializeApp()
 
 const database = admin.database();
-const error = database.ref().child("stats/error")
-const success = database.ref().child("stats/success")
+const { ServerValue } = admin.database;
+const errorRef = database.ref("stats/error")
+const successRef = database.ref("stats/success")
 const data: Data = _data as Data;
 
 export default functions.https.onRequest(async (request, response) => {
@@ -21,9 +22,7 @@ export default functions.https.onRequest(async (request, response) => {
 
   if (!name) {
     response.status(404).send('no name supplied');
-    error.push({
-      'no-name-supplied': admin.database.ServerValue.increment(1)
-    });
+    errorRef.child('no-name-supplied').set(ServerValue.increment(1));
     return;
   }
 
@@ -31,14 +30,10 @@ export default functions.https.onRequest(async (request, response) => {
 
   if (!color) {
     response.status(404).send('color not found');
-    error.push({
-      'color-not-found': admin.database.ServerValue.increment(1)
-    });
+    errorRef.child('color-not-found').set(ServerValue.increment(1));
     return;
   }
 
   response.status(200).send(color);
-  success.push({
-      [name]: admin.database.ServerValue.increment(1)
-    });
+  successRef.child(name).set(ServerValue.increment(1));
 });
