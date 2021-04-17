@@ -1,37 +1,36 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 // import QuickChart from 'quickchart-js';
-import _data from "../data.json"
+import _data from "../data.json";
 
 interface Data {
   [x: string]: string;
 }
 
-admin.initializeApp()
+admin.initializeApp();
 
 const database = admin.database();
 const { ServerValue } = admin.database;
-const errorRef = database.ref("stats/error")
-const successRef = database.ref("stats/success")
+const errorRef = database.ref("stats/error");
+const successRef = database.ref("stats/success");
 const data: Data = _data as Data;
 
 export default functions.https.onRequest(async (request, response) => {
-
   const name = request.query.name?.toString();
 
-  response.set('Access-Control-Allow-Origin', '*');
+  response.set("Access-Control-Allow-Origin", "*");
 
   if (!name) {
-    response.status(404).send('no name supplied');
-    errorRef.child('no-name-supplied').set(ServerValue.increment(1));
+    response.status(404).send("no name supplied");
+    errorRef.child("no-name-supplied").set(ServerValue.increment(1));
     return;
   }
 
   const color = data[name];
 
   if (!color) {
-    response.status(404).send('color not found');
-    errorRef.child('color-not-found').set(ServerValue.increment(1));
+    response.status(404).send("color not found");
+    errorRef.child("color-not-found").set(ServerValue.increment(1));
     return;
   }
 
@@ -45,7 +44,16 @@ export const graph = functions.https.onRequest(async (request, response) => {
   // chart.setWidth(500)
   // chart.setHeight(300);
 
-  response.send(await successRef.orderByValue().limitToFirst(10).get())
+  successRef
+    .orderByValue()
+    .limitToFirst(10)
+    .once("value", (snapshot) => {
+      const top10Data: any = [];
+      snapshot.forEach((data) => {
+        top10Data.push({ key: data.key, data: data.val() });
+      });
+      response.json(top10Data);
+    });
 
   // chart.setConfig({
   //   "type": "bar",
@@ -81,4 +89,4 @@ export const graph = functions.https.onRequest(async (request, response) => {
   // });
 
   // response.redirect(chart.getUrl())
-})
+});
