@@ -1,14 +1,13 @@
 import * as functions from "firebase-functions";
-import { promises as fs } from 'fs';
-import * as path from "path"
+import _data from "../data.json"
 
 interface Data {
   [x: string]: string;
 }
 
-const data: Data = JSON.parse(await fs.readFile(path.resolve('./data.json'), 'utf-8'));
-
 export default functions.https.onRequest(async (request, response) => {
+
+  const data: Data = _data as Data;
 
   const name = request.query.name?.toString();
 
