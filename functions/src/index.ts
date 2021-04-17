@@ -39,48 +39,46 @@ export default functions.https.onRequest(async (request, response) => {
   successRef.child(name).set(ServerValue.increment(1));
 });
 
-// const url = 
-
 export const graph = functions.https.onRequest(async (request, response) => {
-  const chart = new QuickChart();
+  // const chart = new QuickChart();
 
-  chart.setWidth(500)
-  chart.setHeight(300);
+  // chart.setWidth(500)
+  // chart.setHeight(300);
 
   response.send(await successRef.orderByValue().limitToFirst(10).get())
 
-  chart.setConfig({
-    "type": "bar",
-    "data": {
-      "labels": [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July"
-      ],
-      "datasets": [
-        {
-          "type": "line",
-          "label": "Dataset 1",
-          "borderColor": "rgb(54, 162, 235)",
-          "borderWidth": 2,
-          "fill": false,
-          "data": [
-            -33,
-            26,
-            29,
-            89,
-            -41,
-            70,
-            -84
-          ]
-        }
-      ]
-    }
-  });
+  // chart.setConfig({
+  //   "type": "bar",
+  //   "data": {
+  //     "labels": [
+  //       "January",
+  //       "February",
+  //       "March",
+  //       "April",
+  //       "May",
+  //       "June",
+  //       "July"
+  //     ],
+  //     "datasets": [
+  //       {
+  //         "type": "line",
+  //         "label": "Dataset 1",
+  //         "borderColor": "rgb(54, 162, 235)",
+  //         "borderWidth": 2,
+  //         "fill": false,
+  //         "data": [
+  //           -33,
+  //           26,
+  //           29,
+  //           89,
+  //           -41,
+  //           70,
+  //           -84
+  //         ]
+  //       }
+  //     ]
+  //   }
+  // });
 
   // response.redirect(chart.getUrl())
 })
