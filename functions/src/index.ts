@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-// import QuickChart from 'quickchart-js';
+import QuickChart from 'quickchart-js';
 import _data from "../data.json";
 
 interface Data {
@@ -39,54 +39,40 @@ export default functions.https.onRequest(async (request, response) => {
 });
 
 export const graph = functions.https.onRequest(async (request, response) => {
-  // const chart = new QuickChart();
+  const chart = new QuickChart();
 
-  // chart.setWidth(500)
-  // chart.setHeight(300);
+  chart.setWidth(500)
+  chart.setHeight(300);
+
+  const labels: string[] = []
+  const data: number[] = []
 
   successRef
     .orderByValue()
-    .limitToFirst(10)
-    .once("value", (snapshot) => {
-      const top10Data: any = [];
-      snapshot.forEach((data) => {
-        top10Data.push({ key: data.key, data: data.val() });
+    .limitToLast(10)
+    .once("value", (snapshots) => {
+      snapshots.forEach((snapshot) => {
+        labels.push(snapshot.key || "")
+        data.push(snapshot.val())
       });
-      response.json(top10Data);
     });
 
-  // chart.setConfig({
-  //   "type": "bar",
-  //   "data": {
-  //     "labels": [
-  //       "January",
-  //       "February",
-  //       "March",
-  //       "April",
-  //       "May",
-  //       "June",
-  //       "July"
-  //     ],
-  //     "datasets": [
-  //       {
-  //         "type": "line",
-  //         "label": "Dataset 1",
-  //         "borderColor": "rgb(54, 162, 235)",
-  //         "borderWidth": 2,
-  //         "fill": false,
-  //         "data": [
-  //           -33,
-  //           26,
-  //           29,
-  //           89,
-  //           -41,
-  //           70,
-  //           -84
-  //         ]
-  //       }
-  //     ]
-  //   }
-  // });
+  chart.setConfig({
+    "type": "bar",
+    "data": {
+      "labels": labels,
+      "datasets": [
+        {
+          "type": "line",
+          "label": "Top 10 Badges",
+          "borderColor": "rgb(54, 162, 235)",
+          "borderWidth": 2,
+          "fill": false,
+          "data": data
+        }
+      ]
+    }
+  });
 
-  // response.redirect(chart.getUrl())
+  response.redirect(chart.getUrl())
 });
