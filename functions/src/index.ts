@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-import QuickChart from 'quickchart-js';
+// import QuickChart from 'quickchart-js';
 import _data from "../data.json"
 
 interface Data {
