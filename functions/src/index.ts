@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-import QuickChart from 'quickchart-js';
+import QuickChart from "quickchart-js";
 import _data from "../data.json";
 
 interface Data {
@@ -41,38 +41,38 @@ export default functions.https.onRequest(async (request, response) => {
 export const graph = functions.https.onRequest(async (request, response) => {
   const chart = new QuickChart();
 
-  chart.setWidth(500)
+  chart.setWidth(500);
   chart.setHeight(300);
 
-  const labels: string[] = []
-  const data: number[] = []
+  const labels: string[] = [];
+  const data: number[] = [];
 
   successRef
     .orderByValue()
     .limitToLast(10)
     .once("value", (snapshots) => {
       snapshots.forEach((snapshot) => {
-        labels.push(snapshot.key || "")
-        data.push(snapshot.val())
+        labels.push(snapshot.key || "");
+        data.push(snapshot.val());
       });
+
+      chart.setConfig({
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              type: "line",
+              label: "Top 10 Badges",
+              borderColor: "rgb(54, 162, 235)",
+              borderWidth: 2,
+              fill: false,
+              data: data,
+            },
+          ],
+        },
+      });
+
+      response.redirect(chart.getUrl());
     });
-
-  chart.setConfig({
-    "type": "bar",
-    "data": {
-      "labels": labels,
-      "datasets": [
-        {
-          "type": "line",
-          "label": "Top 10 Badges",
-          "borderColor": "rgb(54, 162, 235)",
-          "borderWidth": 2,
-          "fill": false,
-          "data": data
-        }
-      ]
-    }
-  });
-
-  response.redirect(chart.getUrl())
 });
