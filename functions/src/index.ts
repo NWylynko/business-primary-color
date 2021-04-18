@@ -1,12 +1,14 @@
 import * as functions from "firebase-functions";
-import * as admin from "firebase-admin";
 import _data from "../data.json";
 
 interface Data {
   [x: string]: string;
 }
 
-const initDataBase = () => {
+const initDataBase = async () => {
+  const admin = await import("firebase-admin");
+  admin.initializeApp();
+
   const database = admin.database();
   const { ServerValue } = admin.database;
   const errorRef = database.ref("stats/error");
@@ -35,8 +37,6 @@ const initDataBase = () => {
   };
 };
 
-admin.initializeApp();
-
 const data: Data = _data as Data;
 
 export default functions.https.onRequest(async (request, response) => {
@@ -46,7 +46,7 @@ export default functions.https.onRequest(async (request, response) => {
 
   if (!name) {
     response.status(404).send("no name supplied");
-    initDataBase().errorNOName()
+    (await initDataBase()).errorNOName()
     return;
   }
 
@@ -54,12 +54,12 @@ export default functions.https.onRequest(async (request, response) => {
 
   if (!color) {
     response.status(404).send("color not found");
-    initDataBase().errorNOColor()
+    (await initDataBase()).errorNOColor()
     return;
   }
 
   response.status(200).send(color);
-  initDataBase().success(color);
+  (await initDataBase()).success(color);
 });
 
 export const graph = functions.https.onRequest(async (request, response) => {
@@ -73,7 +73,7 @@ export const graph = functions.https.onRequest(async (request, response) => {
   const labels: string[] = [];
   const data: number[] = [];
 
-  initDataBase().successRef
+  (await initDataBase()).successRef
     .orderByValue()
     .limitToLast(10)
     .once("value", (snapshots) => {
