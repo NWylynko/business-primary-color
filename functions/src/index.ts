@@ -83,9 +83,9 @@ export const graph = functions.https.onRequest(async (request, response) => {
       });
 
       chart.setConfig({
-        type: "bar",
+        type: "line",
         data: {
-          labels: labels,
+          labels: labels.reverse(),
           datasets: [
             {
               type: "line",
@@ -93,7 +93,7 @@ export const graph = functions.https.onRequest(async (request, response) => {
               borderColor: "rgb(54, 162, 235)",
               borderWidth: 2,
               fill: false,
-              data: data,
+              data: data.reverse(),
             },
           ],
         },
