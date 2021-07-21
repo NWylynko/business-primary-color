@@ -10,7 +10,7 @@ const initDataBase = async () => {
   const app = admin.apps[0] ?? admin.initializeApp();
 
   const database = app.database();
-  const { ServerValue } = app.database;
+  const { ServerValue } = admin.database;
   const errorRef = database.ref("stats/error");
   const successRef = database.ref("stats/success");
 
