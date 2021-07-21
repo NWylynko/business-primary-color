@@ -39,6 +39,10 @@ const initDataBase = async () => {
 
 const data: Data = _data as Data;
 
+const remove = (text: string, filterItems: string[]) => {
+  return filterItems.reduce((newText, filterItem) => newText.replaceAll(filterItem, ""), text)
+}
+
 export default functions.https.onRequest(async (request, response) => {
   const name = request.query.name?.toString();
 
@@ -59,7 +63,7 @@ export default functions.https.onRequest(async (request, response) => {
   }
 
   response.status(200).send(color);
-  (await initDataBase()).success(name);
+  (await initDataBase()).success(remove(name, [".", "#", "$", "[", "]"]);
 });
 
 export const graph = functions.https.onRequest(async (request, response) => {
