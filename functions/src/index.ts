@@ -40,7 +40,7 @@ const initDataBase = async () => {
 const data: Data = _data as Data;
 
 const remove = (text: string, filterItems: string[]) => {
-  return filterItems.reduce((newText, filterItem) => newText.replaceAll(filterItem, ""), text)
+  return filterItems.reduce((newText, filterItem) => newText.replace(filterItem, ""), text)
 }
 
 export default functions.https.onRequest(async (request, response) => {
