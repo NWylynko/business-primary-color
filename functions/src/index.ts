@@ -7,10 +7,10 @@ interface Data {
 
 const initDataBase = async () => {
   const admin = await import("firebase-admin");
-  admin.initializeApp();
+  const app = admin.apps[0] ?? admin.initializeApp();
 
-  const database = admin.database();
-  const { ServerValue } = admin.database;
+  const database = app.database();
+  const { ServerValue } = app.database;
   const errorRef = database.ref("stats/error");
   const successRef = database.ref("stats/success");
 
