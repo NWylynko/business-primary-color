@@ -59,7 +59,7 @@ export default functions.https.onRequest(async (request, response) => {
   }
 
   response.status(200).send(color);
-  (await initDataBase()).success(color);
+  (await initDataBase()).success(name);
 });
 
 export const graph = functions.https.onRequest(async (request, response) => {
